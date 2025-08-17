@@ -264,6 +264,32 @@ output "vm_db_ip_address" {
 2. Замените переменные внутри ресурса ВМ на созданные вами local-переменные.
 3. Примените изменения.
 
+```*.tf
+locals.tf
+
+locals {
+ name_web = "${var.vm_web_name}"
+ name_db = "${var.vm_db_name}"
+}
+
+```
+```*.tf
+main.tf
+
+resource "yandex_compute_instance" "platform" {
+  name        = local.name_web
+  ....
+}
+
+vms_platform.tf
+
+resource "yandex_compute_instance" "vm2" {
+  name        = local.name_db
+  ...
+}
+```
+![img.png](https://github.com/Andromeles/Lessom-3.2/blob/main/8.png)
+
 
 ### Задание 6
 
@@ -289,6 +315,52 @@ output "vm_db_ip_address" {
      }
    }
    ```
+```*.tf
+main.tf
+
+resource "yandex_compute_instance" "platform" {
+  name        = local.name_web
+  platform_id = var.vm_web_platform_id
+  resources {
+    cores         = var.vms_resources.web.cores
+    memory        = var.vms_resources.web.memory
+    core_fraction = var.vms_resources.web.fraction
+  }
+
+```
+
+```*.tf
+vms_platform.tf
+
+resource "yandex_compute_instance" "vm2" {
+  name        = local.name_db
+  platform_id = var.vm_db_platform_id
+  resources {
+    cores         = var.vms_resources.db.cores
+    memory        = var.vms_resources.db.memory
+    core_fraction = var.vms_resources.db.fraction
+  }
+
+```
+
+```*.tf
+variables.tf
+
+variable "vms_resources" {
+  default = {
+    web = {
+      cores = 2
+      memory = 1
+      fraction = 5
+    },
+    db = {
+      cores = 2
+      memory = 2
+      fraction = 20
+    }
+  }
+}
+```   
 3. Создайте и используйте отдельную map(object) переменную для блока metadata, она должна быть общая для всех ваших ВМ.
    ```
    пример из terraform.tfvars:
@@ -296,7 +368,20 @@ output "vm_db_ip_address" {
      serial-port-enable = 1
      ssh-keys           = "ubuntu:ssh-ed25519 AAAAC..."
    }
-   ```  
+   ```
+
+```*.tf
+variables.tf
+
+variable "metadata" {
+  default = {
+    serial-port-enable = 1
+    ssh-keys           = "ubuntu:ssh-rsa ***"
+  }
+}
+```
+
+```В файлах main.tf и vms_platform.tf указал metadata = var.metadata```
   
 5. Найдите и закоментируйте все, более не используемые переменные проекта.
 6. Проверьте terraform plan. Изменений быть не должно.
