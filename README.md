@@ -229,6 +229,9 @@ resource "yandex_compute_instance" "platform" {
 2. Скопируйте блок ресурса и создайте с его помощью вторую ВМ в файле main.tf: **"netology-develop-platform-db"** ,  ```cores  = 2, memory = 2, core_fraction = 20```. Объявите её переменные с префиксом **vm_db_** в том же файле ('vms_platform.tf').  ВМ должна работать в зоне "ru-central1-b"
 3. Примените изменения.
 
+![img.png](https://github.com/Andromeles/Lessom-3.2/blob/main/4.png)
+![img.png](https://github.com/Andromeles/Lessom-3.2/blob/main/5.png)
+![img.png](https://github.com/Andromeles/Lessom-3.2/blob/main/6.png)
 
 ### Задание 4
 
