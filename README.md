@@ -238,7 +238,24 @@ resource "yandex_compute_instance" "platform" {
 1. Объявите в файле outputs.tf **один** output , содержащий: instance_name, external_ip, fqdn для каждой из ВМ в удобном лично для вас формате.(без хардкода!!!)
 2. Примените изменения.
 
+```output.tf
+
+output "vm_web_ip_address" {
+  value = yandex_compute_instance.platform.*.network_interface.0.nat_ip_address
+  description = "vm_web ip"
+}
+
+
+output "vm_db_ip_address" {
+  value = yandex_compute_instance.vm2.*.network_interface.0.nat_ip_address
+  description = "vm_db ip"
+}
+
+```
+
 В качестве решения приложите вывод значений ip-адресов команды ```terraform output```.
+
+![img.png](https://github.com/Andromeles/Lessom-3.2/blob/main/7.png)
 
 
 ### Задание 5
